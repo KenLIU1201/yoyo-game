@@ -38,6 +38,7 @@
 
 <script>
     let mood = 0;
+    let clickCount = 0; // 記錄按鈕點擊次數
     const messages = ["給妳一顆糖 🍬", "送妳一朵花 🌸", "抱抱 🤗", "親親 😘", "永遠愛妳 ❤️"];
 
     const gifs = [
@@ -54,6 +55,11 @@
     function hugAndHearts() {
         const bgm = document.getElementById("bgm");
         if (bgm.paused) bgm.play();
+
+        clickCount++;
+        if (clickCount > 15) {
+            alert("按這麼多就不能生氣氣了哦 💕");
+        }
 
         if (mood < 100) {
             mood += 20;
@@ -76,15 +82,12 @@
             const heart = document.createElement("div");
             heart.className = "heart";
             heart.innerText = "❤️";
-
             heart.style.left = Math.random() * window.innerWidth + "px";
             heart.style.top = window.innerHeight - 50 + "px";
             const size = 14 + Math.random() * 30;
             heart.style.fontSize = size + "px";
-
             const duration = 1.5 + Math.random() * 2;
             heart.style.animationDuration = duration + "s";
-
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), duration * 1000);
         }
