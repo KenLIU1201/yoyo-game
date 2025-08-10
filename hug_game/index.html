@@ -1,0 +1,90 @@
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>💕 抱抱安慰遊戲 💕</title>
+<style>
+    body { text-align: center; background: #ffe6f0; font-family: Arial, sans-serif; overflow-x: hidden; }
+    h1 { color: #ff4d88; }
+    #progress-container { width: 80%; margin: 20px auto; height: 30px; background: #ffd6e7; border-radius: 15px; overflow: hidden; }
+    #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #ff4d88, #ff99bb); transition: width 0.5s ease; }
+    button { padding: 10px 20px; background: #ff4d88; color: white; border: none; border-radius: 20px; font-size: 18px; cursor: pointer; }
+    button:hover { background: #ff1a66; }
+    #gif-display img { max-width: 250px; margin: 15px; border-radius: 10px; }
+
+    .heart {
+        position: absolute;
+        color: #ff4d88;
+        animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+<h1>💕 讓yoyo開心小遊戲 💕</h1>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+<p id="message">點擊按鈕讓妳開心起來 💖</p>
+
+<button onclick="hugAndHearts()">抱抱一下 🤗</button>
+<div id="gif-display"></div>
+
+<audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    let mood = 0;
+    const messages = ["給妳一顆糖 🍬", "送妳一朵花 🌸", "抱抱 🤗", "親親 😘", "永遠愛妳 ❤️"];
+
+    const gifs = [
+        "images/test1.jpg",
+        "https://media1.tenor.com/m/P6FsFii7pnoAAAAd/hug-warm-hug.gif",
+        "https://media.tenor.com/2pqrALDJCvEAAAAj/bubu-dudu-sseeyall.gif"
+    ];
+    let gifIndex = 0;
+
+    function hugAndHearts() {
+        const bgm = document.getElementById("bgm");
+        if (bgm.paused) bgm.play();
+
+        if (mood < 100) {
+            mood += 20;
+            document.getElementById("progress-bar").style.width = mood + "%";
+            document.getElementById("message").innerText = messages[mood / 20 - 1] + ` (心情值：${mood}%)`;
+        } else {
+            document.getElementById("message").innerText = "寶貝不要不開心了！ 💞";
+        }
+
+        const gifDiv = document.getElementById("gif-display");
+        gifDiv.innerHTML = `<img src="${gifs[gifIndex]}" alt="抱抱">`;
+        gifIndex = (gifIndex + 1) % gifs.length;
+        setTimeout(() => { gifDiv.innerHTML = ""; }, 5000);
+
+        manyHearts();
+    }
+
+    function manyHearts() {
+        for (let i = 0; i < 50; i++) {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "❤️";
+
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = window.innerHeight - 50 + "px";
+            const size = 14 + Math.random() * 30;
+            heart.style.fontSize = size + "px";
+
+            const duration = 1.5 + Math.random() * 2;
+            heart.style.animationDuration = duration + "s";
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+    }
+</script>
+</body>
+</html>
